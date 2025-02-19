@@ -9,15 +9,21 @@ import java.io.*;
 import java.util.LinkedList;
 
 public class Graph {
-
 	
-	// **************************************************
-	// Management of graph file for benchmarking
-	// @feature BENCH
     public Reader inFile; // File handler for reading
     public static int ch; // Character to read/write
 
- 
+    // Lists of vertices and edges
+    public LinkedList<Vertex> vertices;
+    public LinkedList<Edge> edges;
+    
+    //Search result
+    public LinkedList<Vertex> searchOrder;
+    
+	// **************************************************
+	// Management of graph file for benchmarking
+	// @feature BENCH
+    
     /**
      * Opens the benchmark file
      * @param FileName
@@ -68,9 +74,7 @@ public class Graph {
         return Integer.parseInt( theString,10 );
     }
  
-    // Lists of vertices and edges
-    public LinkedList<Vertex> vertices;
-    public LinkedList<Edge> edges;
+
     
     /**
      * Constructor of the Graph class that initializes the vertices and edges. 
@@ -176,26 +180,12 @@ public class Graph {
      * @param vertexName
      */
     
-    //Search result
-    public LinkedList<Vertex> searchOrder;
     
     public void DFS(String vertexName) {
 
-    	
-    	System.out.println("-------------end DFS-------------");
-    } // of DFS 
-    
-    
-    /**
-     * Your implementation of BFS
-     * Note that this methods displays each node in the traversal order
-     * @param vertexName
-     */
-    public void BFS(String vertexName) {
     	Vertex startVertex = findsVertex(vertexName);
-    	//Vertex currentVertex = startVertex;
     	Vertex currentVertex;
-    	int startIndex = vertices.indexOf(startVertex);//stacy i'm here
+    	int startIndex = vertices.indexOf(startVertex);
     	int currentIndex = startIndex;
     	
     	
@@ -256,7 +246,76 @@ public class Graph {
 	    		}
     		}
     	}
-    	//System.out.println("index 25: " + searchOrder.get(25));
+
+    } // of DFS 
+    
+    
+    /**
+     * Your implementation of BFS
+     * Note that this methods displays each node in the traversal order
+     * @param vertexName
+     */
+    public void BFS(String vertexName) {
+    	Vertex startVertex = findsVertex(vertexName);
+    	Vertex currentVertex;
+    	int startIndex = vertices.indexOf(startVertex);
+    	int currentIndex = startIndex;
+    	
+    	
+    	//System.out.println("vertices.size(): " + vertices.size());
+    	
+    	for (int i=0; i < vertices.size(); i++) {
+    		//System.out.println("\n--------new i--------------------");
+    		//System.out.println("i: " + i);
+    		
+    		currentIndex = i;
+    		
+    		//System.out.println("currentIndex before adjust: " + currentIndex);
+    		//System.out.println("vertices.size(): " + vertices.size());
+    		
+    		if (currentIndex >= vertices.size()) {
+    			currentIndex = i - vertices.size();
+    		}
+    		
+    		//System.out.println("currentIndex after adjust: " + currentIndex);
+    		
+    		currentVertex = vertices.get(currentIndex);
+    		
+    		//System.out.printf("currentVertex: ");
+    		//currentVertex.display();
+    		//System.out.println("currentVertex.visited: " + currentVertex.visited);
+    		
+
+    		if (currentVertex.visited == true) {
+    			continue;
+    		} else {
+	    		searchOrder.add(currentVertex);
+	    		currentVertex.visited = true;
+	    		
+	    		//System.out.println("searchOrder size: " + searchOrder.size());
+	    		
+	    		//looking for neighbours
+	    		for (int j=0; j < currentVertex.neighbors.size(); j++) {
+	    			//System.out.println("------new j------");
+	    			//System.out.println("j: " + j);
+	    			//System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());    			
+	    			
+	    			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
+	    			
+	    			if (neighborVertex.visited == true) {
+	    				continue; //break loop if vertex already visited
+	    			} else {
+	    				searchOrder.add(neighborVertex);
+	    				neighborVertex.visited = true;
+	    			
+	    				//System.out.printf("vertex added: ");
+	    				//searchOrder.get(searchOrder.size()-1).display();
+
+	    				//System.out.println("searchOrder size: " + searchOrder.size());
+	    			}
+	    		}
+    		}
+    	}
 
     } // of BFS    
     

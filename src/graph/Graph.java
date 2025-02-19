@@ -180,6 +180,18 @@ public class Graph {
     public LinkedList<Vertex> searchOrder;
     
     public void DFS(String vertexName) {
+
+    	
+    	System.out.println("-------------end DFS-------------");
+    } // of DFS 
+    
+    
+    /**
+     * Your implementation of BFS
+     * Note that this methods displays each node in the traversal order
+     * @param vertexName
+     */
+    public void BFS(String vertexName) {
     	Vertex startVertex = findsVertex(vertexName);
     	//Vertex currentVertex = startVertex;
     	Vertex currentVertex;
@@ -190,7 +202,7 @@ public class Graph {
     	System.out.println("vertices.size(): " + vertices.size());
     	
     	for (int i=0; i < vertices.size(); i++) {
-    		System.out.println("--------new i--------------------");
+    		System.out.println("\n--------new i--------------------");
     		System.out.println("i: " + i);
     		
     		currentIndex = i;
@@ -210,6 +222,7 @@ public class Graph {
     		currentVertex.display();
     		System.out.println("currentVertex.visited: " + currentVertex.visited);
     		
+
     		if (currentVertex.visited == true) {
     			continue;
     		} else {
@@ -217,36 +230,33 @@ public class Graph {
 	    		currentVertex.visited = true;
 	    		
 
-	    		System.out.printf("searchOrder.get(i):");
-	    		searchOrder.get(i).display();
+	    		//System.out.printf("searchOrder.get(i):");
+	    		//searchOrder.get(i).display();
 	    		System.out.println("searchOrder size: " + searchOrder.size());
 	    		
+	    		//looking for neighbours
 	    		for (int j=0; j < currentVertex.neighbors.size(); j++) {
-	    			
+	    			System.out.println("------new j------");
 	    			System.out.println("j: " + j);
-	    			System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());
+	    			System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());    			
 	    			
 	    			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
-	    			searchOrder.add(neighborVertex);
-	    			neighborVertex.visited = true;
-	    			System.out.printf("searchOrder.get(i+j+1):");
-	    			searchOrder.get(i+j+1).display();
-	    			System.out.println("searchOrder size: " + searchOrder.size());
+	    			
+	    			if (neighborVertex.visited == true) {
+	    				continue; //break loop if vertex already visited
+	    			} else {
+	    				searchOrder.add(neighborVertex);
+	    				neighborVertex.visited = true;
+	    			
+	    				System.out.printf("vertex added: ");
+	    				searchOrder.get(searchOrder.size()-1).display();
+
+	    				System.out.println("searchOrder size: " + searchOrder.size());
+	    			}
 	    		}
     		}
     	}
     	//System.out.println("index 25: " + searchOrder.get(25));
-    	
-    	System.out.println("-------------end DFS-------------");
-    } // of DFS 
-    
-    
-    /**
-     * Your implementation of BFS
-     * Note that this methods displays each node in the traversal order
-     * @param vertexName
-     */
-    public void BFS(String vertexName) {
 
     } // of BFS    
     

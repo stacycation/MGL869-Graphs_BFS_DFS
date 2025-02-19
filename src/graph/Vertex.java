@@ -14,6 +14,7 @@ import java.util.List;
 public class Vertex {
     public List<Neighbor> neighbors;
     public String name;
+    boolean visited = false;
     
     // Hint: You may add an attribute to indicate if the vertex has been visited or not
     

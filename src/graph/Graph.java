@@ -192,12 +192,11 @@ public class Graph {
     	
     	//add first vertex
     	searchOrder.add(currentVertex);
-		currentVertex.visited = true;
 		
 		System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());
 		
 		//while this vertex has a neighbor and the searchOrder list is shorter than the vertices list
-    	while (currentVertex.neighbors.size() != 0 && searchOrder.size() < vertices.size()) {
+    	while (currentVertex.neighbors.size() != 0 && searchOrder.size() < vertices.size() && !currentVertex.visited) {
     		
     		DFSRecursion(currentVertex);
     		
@@ -207,9 +206,11 @@ public class Graph {
 
 	public void DFSRecursion(Vertex currentVertex) {
 		System.out.println("\n-----recursion call------");
+		currentVertex.visited = true;
+		System.out.println("current vertex marked as visisted");
 		
 		for (int j = 0; j < currentVertex.neighbors.size(); j++) {
-			
+			System.out.println("j: " + j);
 			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
 			
 			System.out.printf("currentVertex: ");

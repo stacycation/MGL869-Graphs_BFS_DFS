@@ -19,6 +19,7 @@ public class Graph {
     
     //Search result
     public LinkedList<Vertex> searchOrder;
+    private int startIndex;
     
 	// **************************************************
 	// Management of graph file for benchmarking
@@ -185,51 +186,87 @@ public class Graph {
     	System.out.println("\n--------start DFS--------------------");
     	Vertex startVertex = findsVertex(vertexName);
     	Vertex currentVertex = startVertex;
-    	int startIndex = vertices.indexOf(startVertex);
+    	this.startIndex = vertices.indexOf(startVertex);
+    	int currentIndex;
     	
     	System.out.println("vertices.size(): " + vertices.size());
     	System.out.println("searchOrder.size(): " + searchOrder.size());
-    	
-    	//add first vertex
-    	searchOrder.add(currentVertex);
-		
 		System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());
 		
-		//while this vertex has a neighbor and the searchOrder list is shorter than the vertices list
-    	while (currentVertex.neighbors.size() != 0 && searchOrder.size() < vertices.size() && !currentVertex.visited) {
-    		
-    		DFSRecursion(currentVertex);
-    		
+		//while searchOrder list is shorter than the vertices list
+    	//while (searchOrder.size() < vertices.size()) {
+		for (int i=0; i < vertices.size(); i++) {
+    		System.out.println("\n\n.....new while loop....");
+//    		System.out.printf("currentVertex: ");
+//			currentVertex.display();
+    		currentIndex = i + startIndex;
+    		if (currentIndex >= vertices.size()) {
+    			currentIndex = currentIndex - i - startIndex;
+    		}
+    		currentVertex = vertices.get(currentIndex);
+   
+			DFSRecursion(currentVertex);
+
     	}
 
     } // of DFS 
-
+    
+    		
 	public void DFSRecursion(Vertex currentVertex) {
 		System.out.println("\n-----recursion call------");
-		currentVertex.visited = true;
-		System.out.println("current vertex marked as visisted");
-		
-		for (int j = 0; j < currentVertex.neighbors.size(); j++) {
-			System.out.println("j: " + j);
-			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
+		if (!currentVertex.visited) {
+			searchOrder.add(currentVertex);
+			currentVertex.visited = true;
 			
-			System.out.printf("currentVertex: ");
+			System.out.printf("current vertex added: ");
 			currentVertex.display();
-			
-			
-			if (neighborVertex.visited) {
-    			continue; // go to next iteration of j loop
-			} else {
-				searchOrder.add(neighborVertex);
+			System.out.println();
+		}
+		
+		
+		
+		int currentIndex = vertices.indexOf(currentVertex);
+		
+		if (currentVertex.neighbors.size() != 0 ) {
+			for (int j = 0; j < currentVertex.neighbors.size(); j++) {
+				System.out.println("j: " + j);
+				Vertex neighborVertex = currentVertex.neighbors.get(j).end;
 				
-				System.out.printf("neighborVertex added: ");
+				System.out.printf("currentVertex: ");
+				currentVertex.display();
+				System.out.println("searchOrder.size(): " + searchOrder.size());
+				
+				System.out.printf("neighborVertex: ");
 				neighborVertex.display();
-				System.out.println("searchOrder size: " + searchOrder.size());
-				
-				DFSRecursion( neighborVertex);
+				if (neighborVertex.visited) {
+	    			System.out.println("neighborVertex.visited=true");
+					continue; // go to next iteration of j loop
+				} else {
+					searchOrder.add(neighborVertex);
+					neighborVertex.visited = true;
+					
+					System.out.printf("neighborVertex added: ");
+					neighborVertex.display();
+					System.out.println("searchOrder size: " + searchOrder.size());
+					
+					DFSRecursion( neighborVertex);
+				}
 			}
+		} else {
+			//currentIndex = vertices.indexOf(currentVertex);
+			
+			if (currentIndex < vertices.size()-1) {
+				currentIndex = currentIndex+1;
+			} else {
+				currentIndex = currentIndex-this.startIndex;
+			}
+			DFSRecursion(vertices.get(currentIndex));
 		}
 	}
+	
+//	private void setStartIndex(Vertex vertex) {
+//		startIndex = 
+//	}
     
     
     /**
@@ -243,20 +280,26 @@ public class Graph {
     	int startIndex = vertices.indexOf(startVertex);
     	int currentIndex = startIndex;
     	
+    	System.out.println("vertices.size(): " + vertices.size());
+    	System.out.println("startIndex: " + startIndex);
     	
-    	//System.out.println("vertices.size(): " + vertices.size());
     	
     	for (int i=0; i < vertices.size(); i++) {
     		//System.out.println("\n--------new i--------------------");
     		//System.out.println("i: " + i);
     		
-    		currentIndex = i;
+    		currentIndex = startIndex + i;
     		
+    		System.out.println("i: " + i  + ", currentIndex: " + currentIndex);
     		//System.out.println("currentIndex before adjust: " + currentIndex);
     		//System.out.println("vertices.size(): " + vertices.size());
     		
     		if (currentIndex >= vertices.size()) {
-    			currentIndex = i - vertices.size();
+    			System.out.println("i'm in the loop to go back to start of list");
+    			currentIndex = currentIndex - vertices.size();
+    			
+
+    			System.out.println("i: " + i  + ", currentIndex: " + currentIndex);
     		}
     		
     		//System.out.println("currentIndex after adjust: " + currentIndex);

@@ -243,20 +243,25 @@ public class Graph {
     	int startIndex = vertices.indexOf(startVertex);
     	int currentIndex = startIndex;
     	
+    	System.out.println("vertices.size(): " + vertices.size());
+    	System.out.println("startIndex: " + startIndex);
     	
-    	//System.out.println("vertices.size(): " + vertices.size());
     	
     	for (int i=0; i < vertices.size(); i++) {
     		//System.out.println("\n--------new i--------------------");
     		//System.out.println("i: " + i);
     		
-    		currentIndex = i;
+    		currentIndex = startIndex + i;
     		
+    		System.out.println("i: " + i  + ", currentIndex: " + currentIndex);
     		//System.out.println("currentIndex before adjust: " + currentIndex);
     		//System.out.println("vertices.size(): " + vertices.size());
     		
     		if (currentIndex >= vertices.size()) {
-    			currentIndex = i - vertices.size();
+    			currentIndex = currentIndex - i - startIndex;
+    			
+    			System.out.println("i'm in the loop to go back to start of list");
+    			System.out.println("i: " + i  + ", currentIndex: " + currentIndex);
     		}
     		
     		//System.out.println("currentIndex after adjust: " + currentIndex);

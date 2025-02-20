@@ -182,72 +182,53 @@ public class Graph {
     
     
     public void DFS(String vertexName) {
-
+    	System.out.println("\n--------start DFS--------------------");
     	Vertex startVertex = findsVertex(vertexName);
-    	Vertex currentVertex;
+    	Vertex currentVertex = startVertex;
     	int startIndex = vertices.indexOf(startVertex);
-    	int currentIndex = startIndex;
-    	
     	
     	System.out.println("vertices.size(): " + vertices.size());
+    	System.out.println("searchOrder.size(): " + searchOrder.size());
     	
-    	for (int i=0; i < vertices.size(); i++) {
-    		System.out.println("\n--------new i--------------------");
-    		System.out.println("i: " + i);
+    	//add first vertex
+    	searchOrder.add(currentVertex);
+		currentVertex.visited = true;
+		
+		System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());
+		
+		//while this vertex has a neighbor and the searchOrder list is shorter than the vertices list
+    	while (currentVertex.neighbors.size() != 0 && searchOrder.size() < vertices.size()) {
     		
-    		currentIndex = i;
+    		DFSRecursion(currentVertex);
     		
-    		System.out.println("currentIndex before adjust: " + currentIndex);
-    		System.out.println("vertices.size(): " + vertices.size());
-    		
-    		if (currentIndex >= vertices.size()) {
-    			currentIndex = i - vertices.size();
-    		}
-    		
-    		System.out.println("currentIndex after adjust: " + currentIndex);
-    		
-    		currentVertex = vertices.get(currentIndex);
-    		
-    		System.out.printf("currentVertex: ");
-    		currentVertex.display();
-    		System.out.println("currentVertex.visited: " + currentVertex.visited);
-    		
-
-    		if (currentVertex.visited == true) {
-    			continue;
-    		} else {
-	    		searchOrder.add(currentVertex);
-	    		currentVertex.visited = true;
-	    		
-
-	    		//System.out.printf("searchOrder.get(i):");
-	    		//searchOrder.get(i).display();
-	    		System.out.println("searchOrder size: " + searchOrder.size());
-	    		
-	    		//looking for neighbours
-	    		for (int j=0; j < currentVertex.neighbors.size(); j++) {
-	    			System.out.println("------new j------");
-	    			System.out.println("j: " + j);
-	    			System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());    			
-	    			
-	    			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
-	    			
-	    			if (neighborVertex.visited == true) {
-	    				continue; //break loop if vertex already visited
-	    			} else {
-	    				searchOrder.add(neighborVertex);
-	    				neighborVertex.visited = true;
-	    			
-	    				System.out.printf("vertex added: ");
-	    				searchOrder.get(searchOrder.size()-1).display();
-
-	    				System.out.println("searchOrder size: " + searchOrder.size());
-	    			}
-	    		}
-    		}
     	}
 
     } // of DFS 
+
+	public void DFSRecursion(Vertex currentVertex) {
+		System.out.println("\n-----recursion call------");
+		
+		for (int j = 0; j < currentVertex.neighbors.size(); j++) {
+			
+			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
+			
+			System.out.printf("currentVertex: ");
+			currentVertex.display();
+			
+			
+			if (neighborVertex.visited) {
+    			continue; // go to next iteration of j loop
+			} else {
+				searchOrder.add(neighborVertex);
+				
+				System.out.printf("neighborVertex added: ");
+				neighborVertex.display();
+				System.out.println("searchOrder size: " + searchOrder.size());
+				
+				DFSRecursion( neighborVertex);
+			}
+		}
+	}
     
     
     /**

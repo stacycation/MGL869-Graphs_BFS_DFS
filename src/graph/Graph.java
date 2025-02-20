@@ -183,15 +183,15 @@ public class Graph {
     
     
     public void DFS(String vertexName) {
-    	System.out.println("\n--------start DFS--------------------");
+    	//System.out.println("\n--------start DFS--------------------");
     	Vertex startVertex = findsVertex(vertexName);
     	Vertex currentVertex = startVertex;
     	this.startIndex = vertices.indexOf(startVertex);
     	int currentIndex;
     	
-    	System.out.println("vertices.size(): " + vertices.size());
-    	System.out.println("searchOrder.size(): " + searchOrder.size());
-		System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());
+    	//System.out.println("vertices.size(): " + vertices.size());
+    	//System.out.println("searchOrder.size(): " + searchOrder.size());
+		//System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());
 		
 
 		for (int i=0; i < vertices.size(); i++) {
@@ -216,14 +216,14 @@ public class Graph {
     
     		
 	public void DFSRecursion(Vertex currentVertex) {
-		System.out.println("\n-----recursion call------");
+		//System.out.println("\n-----recursion call------");
 		if (!currentVertex.visited) {
 			searchOrder.add(currentVertex);
 			currentVertex.visited = true;
 			
-			System.out.printf("current vertex added: ");
-			currentVertex.display();
-			System.out.println("searchOrder size: " + searchOrder.size());
+			//System.out.printf("current vertex added: ");
+			//currentVertex.display();
+			//System.out.println("searchOrder size: " + searchOrder.size());
 		}
 		
 		
@@ -231,27 +231,27 @@ public class Graph {
 		
 		if (currentVertex.neighbors.size() != 0 ) {
 			for (int j = 0; j < currentVertex.neighbors.size(); j++) {
-				System.out.println("j: " + j);
+				//System.out.println("j: " + j);
 				Vertex neighborVertex = currentVertex.neighbors.get(j).end;
 				
-				System.out.printf("currentVertex: ");
-				currentVertex.display();
+				//System.out.printf("currentVertex: ");
+				//currentVertex.display();
 				//System.out.println("searchOrder.size(): " + searchOrder.size());
 				
 				//System.out.printf("neighborVertex: ");
 				neighborVertex.display();
 				if (neighborVertex.visited) {
-	    			System.out.println("neighborVertex.visited=true");
+	    			//System.out.println("neighborVertex.visited=true");
 					continue; // go to next iteration of j loop
 				} else {
 					searchOrder.add(neighborVertex);
 					neighborVertex.visited = true;
 					
-					System.out.printf("neighborVertex added: ");
-					neighborVertex.display();
-					System.out.println("searchOrder size: " + searchOrder.size());
+					//System.out.printf("neighborVertex added: ");
+					//neighborVertex.display();
+					//System.out.println("searchOrder size: " + searchOrder.size());
 					
-					System.out.println("inside j loop");
+					//System.out.println("inside j loop");
 					DFSRecursion( neighborVertex);
 				}
 			}
@@ -266,7 +266,7 @@ public class Graph {
 			
 			Vertex nextVertex = vertices.get(currentIndex);
 			if (!nextVertex.visited) {
-				System.out.println("inside recurse else");
+				//System.out.println("inside recurse else");
 				DFSRecursion(nextVertex);
 			} else {
 				return;
@@ -282,21 +282,21 @@ public class Graph {
      * @param vertexName
      */
     public void BFS(String vertexName) {
-    	System.out.println("\n--------start BFS--------------------");
+    	//System.out.println("\n--------start BFS--------------------");
     	
     	Vertex startVertex = findsVertex(vertexName);
     	Vertex currentVertex;
     	this.startIndex = vertices.indexOf(startVertex);
     	int currentIndex = startIndex;
     	
-    	System.out.println("vertices.size(): " + vertices.size());
-    	System.out.println("startIndex: " + startIndex);
+    	//System.out.println("vertices.size(): " + vertices.size());
+    	//System.out.println("startIndex: " + startIndex);
     	
     	
     	for (int i=0; i < vertices.size(); i++) {
 
     		currentIndex = startIndex + i;
-    		System.out.println("i: " + i  + ", currentIndex: " + currentIndex);
+    		//System.out.println("i: " + i  + ", currentIndex: " + currentIndex);
     		
     		//logic to loop back to the beginning of the list if we are past the end of the list
     		if (currentIndex >= vertices.size()) {
@@ -315,9 +315,9 @@ public class Graph {
 	    		searchOrder.add(currentVertex);
 	    		currentVertex.visited = true;
 	    		
-				System.out.printf("currentVertex added: ");
-				currentVertex.display();
-				System.out.println("searchOrder size: " + searchOrder.size());
+				//System.out.printf("currentVertex added: ");
+				//currentVertex.display();
+				//System.out.println("searchOrder size: " + searchOrder.size());
     		}
     		
     		BFSRecursion(currentVertex);
@@ -327,15 +327,15 @@ public class Graph {
     
     private void BFSRecursion(Vertex currentVertex) {
 		//looking for neighbours
-    	System.out.println("\n------BFSrecursion------");
-		
-		System.out.printf("currentVertex: ");
-		currentVertex.display();
+    	//System.out.println("\n------BFSrecursion------");
+		//
+		//System.out.printf("currentVertex: ");
+		//currentVertex.display();
 		
     	
 		for (int j=0; j < currentVertex.neighbors.size(); j++) {
 			//System.out.println("------new j------");
-			System.out.println("j: " + j);
+			//System.out.println("j: " + j);
 			//System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());    			
 			
 			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
@@ -346,9 +346,9 @@ public class Graph {
 				searchOrder.add(neighborVertex);
 				neighborVertex.visited = true;
 				
-				System.out.printf("neighborVertex added: ");
-				neighborVertex.display();
-				System.out.println("searchOrder size: " + searchOrder.size());
+				//System.out.printf("neighborVertex added: ");
+				//neighborVertex.display();
+				//System.out.println("searchOrder size: " + searchOrder.size());
 			}
 		}
 		

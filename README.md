@@ -1,5 +1,6 @@
 ## About
-This project contains the Breadth First Search (BFS) and Depth First Search (DFS) algorithms for graphs. Both algorithms were implemented using a recursive method to ensure that the algorithms would work on larger, more complex graphs. 
+This project contains the Breadth First Search (BFS) and Depth First Search (DFS) algorithms for graphs. Both algorithms were implemented using a recursive method to ensure that the algorithms would work on larger, more complex graphs.
+The BFS and DFS algorithms are found in the Graph.java file, and the GraphMain.java contains the program entrypoint.
 
 ## Execution
 This program takes four arguments in a specific order. They are as follows:

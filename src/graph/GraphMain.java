@@ -30,6 +30,9 @@ public class GraphMain {
     		System.exit(0);
     	};
     	
+    	
+    	assignConfiguration(args);
+    	
     	// @DEBUG 
     	if (DFS) System.out.println("DFS Selected");
     	if (BFS) System.out.println("BFS Selected");
@@ -123,12 +126,12 @@ public class GraphMain {
         	}
         }
      
-         g.display();
 
          // Call the methods here starting on the starting vertex
          if (BFS) g.BFS(args[1]);
          else g.DFS(args[1]);
-         
+         g.display();
+
          
     } // main
 
@@ -142,21 +145,39 @@ public class GraphMain {
 	private static boolean validConfiguration(String[] args) {
 		
 		// Does not have the 4 arguments required
-		if (args.length!=4) return false;
+		if (args.length!=4) {
+			System.out.println("arg string length: "+args.length);
+			System.out.println("bad arg length");
+			return false;
+		}
 		
 		// Checks args[0] algorithm to execute
 		int algorithm = Integer.valueOf(args[0]);
-		if (algorithm!=1 && algorithm!=2) return false;
+		if (algorithm!=1 && algorithm!=2) {
+			System.out.println("bad algo");
+			return false;
+		}
 		
 		// Note: No checks for args[1] here. Your DFS et BFS algorithms will verify that before executing
 		
 		// Checks args[2] for type of graph
 		int typeGraph = Integer.valueOf(args[2]);
-		if (typeGraph!=1 && typeGraph!=2) return false;
+		if (typeGraph!=1 && typeGraph!=2) {
+			System.out.println("bad graph type");
+			return false;
+		}
 		
 		// Note: The existence of the file name is not verified here
+		//STACY: add argument assignations to the constants above
 		return true;
 	} // of validConfiguration
+	
+	private static void assignConfiguration(String[] args) {
+		DFS = (Integer.valueOf(args[0]) == 2) ? true : false;
+		BFS = (Integer.valueOf(args[0]) == 1) ? true : false;
+		UNDIRECTED = (Integer.valueOf(args[2]) == 2) ? true : false;
+		DIRECTED = (Integer.valueOf(args[2]) == 1) ? true : false;
+	}
 	
 	
 } // of GraphMain

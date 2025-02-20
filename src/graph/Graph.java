@@ -9,15 +9,21 @@ import java.io.*;
 import java.util.LinkedList;
 
 public class Graph {
-
 	
-	// **************************************************
-	// Management of graph file for benchmarking
-	// @feature BENCH
     public Reader inFile; // File handler for reading
     public static int ch; // Character to read/write
 
- 
+    // Lists of vertices and edges
+    public LinkedList<Vertex> vertices;
+    public LinkedList<Edge> edges;
+    
+    //Search result
+    public LinkedList<Vertex> searchOrder;
+    
+	// **************************************************
+	// Management of graph file for benchmarking
+	// @feature BENCH
+    
     /**
      * Opens the benchmark file
      * @param FileName
@@ -68,9 +74,7 @@ public class Graph {
         return Integer.parseInt( theString,10 );
     }
  
-    // Lists of vertices and edges
-    public LinkedList<Vertex> vertices;
-    public LinkedList<Edge> edges;
+
     
     /**
      * Constructor of the Graph class that initializes the vertices and edges. 
@@ -78,6 +82,7 @@ public class Graph {
     public Graph() {
         vertices = new LinkedList<Vertex>();
         edges = new LinkedList<Edge>();
+        searchOrder = new LinkedList<Vertex>();
     }
     
 
@@ -143,7 +148,7 @@ public class Graph {
 
      
     /**
-     * Displays the list of vertices and edges
+     * Displays the list of vertices, edges, and search order
      */
     public void display() {
         int i;
@@ -159,6 +164,9 @@ public class Graph {
             ( ( Edge ) edges.get( i ) ).display();
                 
         System.out.println( "******************************************" );
+        System.out.println( "Search Order " );
+        for ( i=0; i<searchOrder.size(); i++ )
+            System.out.printf(searchOrder.get( i ).name + " ");
     } // of display
     
      
@@ -171,9 +179,57 @@ public class Graph {
      * Note that this methods displays each node in the traversal order
      * @param vertexName
      */
+    
+    
     public void DFS(String vertexName) {
+    	System.out.println("\n--------start DFS--------------------");
+    	Vertex startVertex = findsVertex(vertexName);
+    	Vertex currentVertex = startVertex;
+    	int startIndex = vertices.indexOf(startVertex);
     	
+    	System.out.println("vertices.size(): " + vertices.size());
+    	System.out.println("searchOrder.size(): " + searchOrder.size());
+    	
+    	//add first vertex
+    	searchOrder.add(currentVertex);
+		
+		System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());
+		
+		//while this vertex has a neighbor and the searchOrder list is shorter than the vertices list
+    	while (currentVertex.neighbors.size() != 0 && searchOrder.size() < vertices.size() && !currentVertex.visited) {
+    		
+    		DFSRecursion(currentVertex);
+    		
+    	}
+
     } // of DFS 
+
+	public void DFSRecursion(Vertex currentVertex) {
+		System.out.println("\n-----recursion call------");
+		currentVertex.visited = true;
+		System.out.println("current vertex marked as visisted");
+		
+		for (int j = 0; j < currentVertex.neighbors.size(); j++) {
+			System.out.println("j: " + j);
+			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
+			
+			System.out.printf("currentVertex: ");
+			currentVertex.display();
+			
+			
+			if (neighborVertex.visited) {
+    			continue; // go to next iteration of j loop
+			} else {
+				searchOrder.add(neighborVertex);
+				
+				System.out.printf("neighborVertex added: ");
+				neighborVertex.display();
+				System.out.println("searchOrder size: " + searchOrder.size());
+				
+				DFSRecursion( neighborVertex);
+			}
+		}
+	}
     
     
     /**
@@ -182,7 +238,67 @@ public class Graph {
      * @param vertexName
      */
     public void BFS(String vertexName) {
+    	Vertex startVertex = findsVertex(vertexName);
+    	Vertex currentVertex;
+    	int startIndex = vertices.indexOf(startVertex);
+    	int currentIndex = startIndex;
     	
+    	
+    	//System.out.println("vertices.size(): " + vertices.size());
+    	
+    	for (int i=0; i < vertices.size(); i++) {
+    		//System.out.println("\n--------new i--------------------");
+    		//System.out.println("i: " + i);
+    		
+    		currentIndex = i;
+    		
+    		//System.out.println("currentIndex before adjust: " + currentIndex);
+    		//System.out.println("vertices.size(): " + vertices.size());
+    		
+    		if (currentIndex >= vertices.size()) {
+    			currentIndex = i - vertices.size();
+    		}
+    		
+    		//System.out.println("currentIndex after adjust: " + currentIndex);
+    		
+    		currentVertex = vertices.get(currentIndex);
+    		
+    		//System.out.printf("currentVertex: ");
+    		//currentVertex.display();
+    		//System.out.println("currentVertex.visited: " + currentVertex.visited);
+    		
+
+    		if (currentVertex.visited == true) {
+    			continue;
+    		} else {
+	    		searchOrder.add(currentVertex);
+	    		currentVertex.visited = true;
+	    		
+	    		//System.out.println("searchOrder size: " + searchOrder.size());
+	    		
+	    		//looking for neighbours
+	    		for (int j=0; j < currentVertex.neighbors.size(); j++) {
+	    			//System.out.println("------new j------");
+	    			//System.out.println("j: " + j);
+	    			//System.out.println("currentVertex.neighbors.size(): " + currentVertex.neighbors.size());    			
+	    			
+	    			Vertex neighborVertex = currentVertex.neighbors.get(j).end;
+	    			
+	    			if (neighborVertex.visited == true) {
+	    				continue; //break loop if vertex already visited
+	    			} else {
+	    				searchOrder.add(neighborVertex);
+	    				neighborVertex.visited = true;
+	    			
+	    				//System.out.printf("vertex added: ");
+	    				//searchOrder.get(searchOrder.size()-1).display();
+
+	    				//System.out.println("searchOrder size: " + searchOrder.size());
+	    			}
+	    		}
+    		}
+    	}
+
     } // of BFS    
     
     

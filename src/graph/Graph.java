@@ -327,8 +327,8 @@ public class Graph {
     
     private void BFSRecursion(Vertex currentVertex) {
 		//looking for neighbours
+    	
     	//System.out.println("\n------BFSrecursion------");
-		//
 		//System.out.printf("currentVertex: ");
 		//currentVertex.display();
 		
@@ -353,10 +353,14 @@ public class Graph {
 		}
 		
 		Vertex nextVertex = currentVertex.neighbors.get(0).end; 
-		
-		if (searchOrder.size() < vertices.size()) {
-			BFSRecursion(nextVertex);
-		}
+		if (currentVertex.neighbors.size() != 0 && !nextVertex.visited) {
+			
+			//System.out.println("I'm in the last if of the recursion");
+			//System.out.println("searchOrder size: " + searchOrder.size());
+			if (searchOrder.size() < vertices.size()) {
+				BFSRecursion(nextVertex);
+			}
+		} else { return; }
 		
     }
     
